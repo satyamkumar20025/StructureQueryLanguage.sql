@@ -41,5 +41,19 @@
 
 20. Find employees whose city is included in new office expansion list.
 
+### in;
+
+
+select * from employee where department in("it","hr"," finance");
+
+select * from employee where city in("delhi","pune","mumbai");
+
+select * from employee where salary in("60000","750000","850000");
+
+select * from employee where department in("audit");
+
+select * from employee where email in("gmail.com","yahoo.com","campany.com");
+
+select * from employee where year(joining_date) in(2019,2020,2021);
 
 
