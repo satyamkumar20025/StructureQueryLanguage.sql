@@ -56,4 +56,10 @@ select * from employee where email in("gmail.com","yahoo.com","campany.com");
 
 select * from employee where year(joining_date) in(2019,2020,2021);
 
+select * from employee where year(joining_date)in(2019);--  and salary in(salary>60000); 
+
+select * from employee where city in("delhi","mumbbai","pune");
+
+select * from employee WHERE LEFT (PHONE,3) IN ('777','91','987');
+
 
