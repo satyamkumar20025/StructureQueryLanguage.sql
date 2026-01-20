@@ -62,4 +62,11 @@ select * from employee where city in("delhi","mumbbai","pune");
 
 select * from employee WHERE LEFT (PHONE,3) IN ('777','91','987');
 
+select * from employee where substring_index (email,"@",-1 ) in("gmail.com","yahoo.com","outlock.com");
+
+select * from employee where city in("delhi","patna","Lucknow","gurgaon");
+
+select * from employee where month(joining_date) in(1,2,3);
+
+
 
