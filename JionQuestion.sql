@@ -131,39 +131,55 @@ INSERT INTO Order_Items VALUES
 
 #1. Display employee name with their department name.
 
+  #first method
 select  emp_name, dept_name
  from Employee e 
  inner join Department  d on e.dept_id=d.dept_id;
- 
+
+  #Secod method
 select  emp_name, dept_name 
-from Employee e left join Department  d on e.dept_id=d.dept_id;
+from Employee e 
+left join Department  d 
+on e.dept_id=d.dept_id;
 
 #2. Show employees who do not belong to any department.
+  
+  #first method
 select emp_name
  from Employee e 
  left join Department d on e.dept_id = d.dept_id 
  where d.dept_id is null;
- 
+
+ #Secod method
 select emp_name 
 from Employee
  where dept_id is null;
 
 #3. Fetch departments having no employees.
-select dept_name from Department d left join Employee e on d.dept_id= e.dept_id where e.emp_id is null ;
+
+  
+select dept_name 
+from Department d 
+left join Employee e 
+on d.dept_id= e.dept_id 
+where e.emp_id is null ;
 
 #4. Display employee and their manager name.
+  
 SELECT e.emp_name AS Employee, m.emp_name AS Manager
 FROM Employee e
 LEFT JOIN Employee m
 ON e.manager_id = m.emp_id;
 
 #5. Show customers along with their orders (include customers without orders).
+  
 SELECT c.cust_name, o.order_id
 FROM Customer c
 LEFT JOIN Orders o
 ON c.cust_id = o.cust_id;
 
 #6. Find customers who never placed an order.
+  
 SELECT c.cust_name
 FROM Customer c
 LEFT JOIN Orders o
@@ -171,12 +187,14 @@ ON c.cust_id = o.cust_id
 WHERE o.order_id IS NULL;
 
 #7. Display order id, customer name, and order amount.
+  
 select o.order_id, c.cust_name,o.amount
  from Orders o
  join Customer c
  on o.cust_id=c.cust_id;
 
 #8. Show employees earning more than their manager.
+  
 SELECT e.emp_name
 FROM Employee e
 JOIN Employee m
@@ -184,6 +202,7 @@ ON e.manager_id = m.emp_id
 WHERE e.salary > m.salary;
 
 #9. Display department-wise employee count.
+  
 select dept_name ,
 count(emp_id)as total_Employees 
 from Department d 
@@ -207,4 +226,89 @@ from Department d
 #11. Fetch employees working in IT department.
 
 select emp_name 
-from Employee e inner join Department d  on e.dept_id = d.dept_id where dept_name in ("IT"); 
+from Employee e 
+inner join Department d 
+on e.dept_id = d.dept_id 
+where dept_name in ("IT"); 
+
+
+
+#12. Display total order amount per customer.
+  
+select cust_name ,sum(amount)as total_amount 
+from Customer c left join Orders o
+on c.cust_id=o.cust_id 
+group by cust_name;
+
+#13. Find customers who placed more than one order.
+SELECT cust_name 
+FROM Customer c
+JOIN Orders o
+ON c.cust_id = o.cust_id
+GROUP BY c.cust_name
+HAVING COUNT(o.order_id) > 1;
+
+#14. Display product name and total quantity sold.
+  
+select prod_name,sum(quantity) 
+as total_sold from Product p 
+join Order_Items i on p.prod_id=i.prod_id 
+group by p.prod_name;
+
+#15. Show orders placed in February 2024 with customer names.
+  
+select cust_name 
+from Customer c
+left join Orders o
+on c.cust_id=o.cust_id 
+where   order_date 
+between "20240201" 
+and  "20240229";
+
+#16. Find employees reporting to manager Amit.
+  
+SELECT emp_name
+FROM Employee e
+JOIN Employee m
+ON e.manager_id = m.emp_id
+WHERE m.emp_name = 'Amit';
+
+#17. Show highest paid employee in each department.
+  
+SELECT dept_name, emp_name, salary
+FROM Employee e
+JOIN Department d ON e.dept_id = d.dept_id
+WHERE (e.dept_id, e.salary) IN (
+  SELECT dept_id, MAX(salary)
+  FROM Employee
+  GROUP BY dept_id
+);
+
+#18. Display employees whose department is Finance or HR.
+
+SELECT emp_name
+FROM Employee e
+JOIN Department d
+ON e.dept_id = d.dept_id
+WHERE d.dept_name IN ('Finance','HR');
+
+#19. Find customers whose total order value is above 25,000.
+ 
+ SELECT cust_name
+FROM Customer c
+JOIN Orders o
+ON c.cust_id = o.cust_id
+GROUP BY c.cust_name
+HAVING SUM(o.amount) > 25000;
+
+#20. Show departments where average salary > 60,000.
+
+SELECT dept_name
+FROM Department d
+JOIN Employee e
+ON d.dept_id = e.dept_id
+GROUP BY d.dept_name
+HAVING AVG(e.salary) > 60000;
+
+
+
