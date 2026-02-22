@@ -311,4 +311,59 @@ GROUP BY d.dept_name
 HAVING AVG(e.salary) > 60000;
 
 
+#🔹 ADVANCED JOIN SCENARIOS (21–30)
+
+#21. Find second highest salary employee in each department.
+
+SELECT emp_name, dept_id, e.salary
+FROM Employee e
+WHERE e.salary = (
+    SELECT MAX(salary)
+    FROM Employee
+    WHERE dept_id = e.dept_id
+    AND salary < (
+        SELECT MAX(salary)
+        FROM Employee
+        WHERE dept_id = e.dept_id
+    )
+);
+
+
+#22. Show employees who have the same salary.
+  
+select emp_name,salary 
+from Employee 
+where salary in(
+select salary 
+from employee 
+group by salary
+having count(*)>1
+); 
+
+#23. Display latest order placed by each customer.
+  
+select cust_name, max(order_date) as letest_date
+from Customer c
+left join Orders o
+on c.cust_id= o.cust_id
+group by cust_name;
+
+#24. Find products that were never ordered.
+
+select prod_name 
+from Product p 
+left join order_Items o
+on p.prod_id=o.prod_id
+where o.prod_id is null;
+
+#25. Display employees who are not managers.
+
+select emp_name 
+from Employee 
+where emp_id not in(
+select distinct manager_id
+from Employee
+where manager_id is not null);
+
+
 
