@@ -366,4 +366,52 @@ from Employee
 where manager_id is not null);
 
 
+#26. Show managers and count of employees reporting to them.
+
+select m.emp_name as manager_name ,
+count(e.emp_id)as total_employee
+from Employee e 
+left join Employee m
+on m.emp_id = e.manager_id
+group by m.emp_name;
+
+#27. Fetch orders where order amount is greater than average order amount.
+
+select order_id,amount
+from Orders
+where amount> (
+select avg(amount)
+from Orders);
+
+#28. Find departments where no employee earns less than 40,000.
+
+  
+select dept_name
+from Department d
+join Employee e 
+on d.dept_id=e.dept_id
+group by dept_name
+having min(salary)>=40000;
+
+#29. Display employees who joined before their manager.
+  
+select e.emp_name
+from Employee e
+join Employee m 
+on e.manager_id=m.emp_id
+where e.joining_date < m.joining_date;
+
+
+#30. Show customers who ordered Laptop.
+  
+select distinct c.cust_name 
+from Customer c
+join Orders o on c.cust_id=o.cust_id
+join Order_Items oi on o.order_id=oi.order_id
+join Product p on oi.prod_id =p.prod_id
+where p.prod_name="Laptop"; 
+
+
+
+
 
