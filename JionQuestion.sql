@@ -413,5 +413,3 @@ where p.prod_name="Laptop";
 
 
 
-
-
