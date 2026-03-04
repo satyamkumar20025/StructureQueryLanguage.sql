@@ -1,5 +1,3 @@
-
-
 create database joindb;
 use joindb;
 
